@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="71ba6081f8e849d3857b782a79970b59" Name="Diagram1" ZoomLevel="81">
+        <EntityTypeShape EntityType="SkyNetz.FaleMais.DataAccess.Model.Authorization" Width="1.5" PointX="5.25" PointY="4.625" />
+        <EntityTypeShape EntityType="SkyNetz.FaleMais.DataAccess.Model.Customers" Width="1.5" PointX="3" PointY="4.375" />
+        <EntityTypeShape EntityType="SkyNetz.FaleMais.DataAccess.Model.Fares" Width="1.5" PointX="3" PointY="1.125" />
+        <EntityTypeShape EntityType="SkyNetz.FaleMais.DataAccess.Model.Plans" Width="1.5" PointX="0.75" PointY="3" />
+        <AssociationConnector Association="SkyNetz.FaleMais.DataAccess.Model.FK_Authorization_Customers" />
+        <AssociationConnector Association="SkyNetz.FaleMais.DataAccess.Model.FK_Customers_Plans" />
+        <AssociationConnector Association="SkyNetz.FaleMais.DataAccess.Model.FK_Fares_Plans" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
