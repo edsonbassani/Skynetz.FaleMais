@@ -1,7 +1,6 @@
 USE [E:\PROJECTS\SKYNETZ.FALEMAIS\SKYNETZ.FALEMAIS.DATAACCESS\DB\SKYNETZ.FALEMAIS.MDF]
 GO
-
-/****** Object:  Table [dbo].[Authorization]    Script Date: 7/16/2022 10:42:50 PM ******/
+/****** Object:  Table [dbo].[Authorization]    Script Date: 7/17/2022 12:29:40 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -18,7 +17,7 @@ CREATE TABLE [dbo].[Authorization](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Customers]    Script Date: 7/16/2022 10:42:50 PM ******/
+/****** Object:  Table [dbo].[Customers]    Script Date: 7/17/2022 12:29:40 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -28,7 +27,7 @@ CREATE TABLE [dbo].[Customers](
 	[FirstName] [varchar](100) NOT NULL,
 	[MiddleName] [varchar](50) NOT NULL,
 	[LastName] [varchar](100) NOT NULL,
-	[EMail] [varchar](200) NULL,
+	[EMail] [varchar](200) NOT NULL,
 	[PlanId] [int] NOT NULL,
  CONSTRAINT [PK__Customer__3214EC07397DD57F] PRIMARY KEY CLUSTERED 
 (
@@ -36,7 +35,7 @@ CREATE TABLE [dbo].[Customers](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Fares]    Script Date: 7/16/2022 10:42:50 PM ******/
+/****** Object:  Table [dbo].[Fares]    Script Date: 7/17/2022 12:29:40 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -50,13 +49,14 @@ CREATE TABLE [dbo].[Fares](
 	[StarterValue] [decimal](18, 2) NOT NULL,
 	[DiscountedValue] [decimal](18, 2) NOT NULL,
 	[FullValue] [decimal](18, 2) NOT NULL,
+	[UnitValue] [decimal](18, 2) NOT NULL,
  CONSTRAINT [PK__tmp_ms_x__3214EC072EEB446D] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Plans]    Script Date: 7/16/2022 10:42:50 PM ******/
+/****** Object:  Table [dbo].[Plans]    Script Date: 7/17/2022 12:29:40 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -71,39 +71,29 @@ CREATE TABLE [dbo].[Plans](
 ) ON [PRIMARY]
 GO
 SET IDENTITY_INSERT [dbo].[Authorization] ON 
-GO
+
 INSERT [dbo].[Authorization] ([Id], [CustomerId], [LastLogin], [Expires], [SystemId]) VALUES (2, 1, CAST(N'2022-07-16T13:59:00.000' AS DateTime), CAST(N'2022-07-22T00:00:00.000' AS DateTime), N'8db78685-d885-4fbb-a098-1427b669bd28')
-GO
 SET IDENTITY_INSERT [dbo].[Authorization] OFF
 GO
 SET IDENTITY_INSERT [dbo].[Customers] ON 
-GO
+
 INSERT [dbo].[Customers] ([Id], [FirstName], [MiddleName], [LastName], [EMail], [PlanId]) VALUES (1, N'Michael', N'K', N'Pennington', N'mp@skynetz.local', 4)
-GO
 SET IDENTITY_INSERT [dbo].[Customers] OFF
 GO
 SET IDENTITY_INSERT [dbo].[Fares] ON 
-GO
-INSERT [dbo].[Fares] ([Id], [Origin], [Destination], [Time], [PlanId], [StarterValue], [DiscountedValue], [FullValue]) VALUES (1, 11, 16, 20, 1, CAST(0.00 AS Decimal(18, 2)), CAST(0.00 AS Decimal(18, 2)), CAST(38.00 AS Decimal(18, 2)))
-GO
-INSERT [dbo].[Fares] ([Id], [Origin], [Destination], [Time], [PlanId], [StarterValue], [DiscountedValue], [FullValue]) VALUES (2, 11, 17, 80, 2, CAST(0.00 AS Decimal(18, 2)), CAST(37.40 AS Decimal(18, 2)), CAST(136.00 AS Decimal(18, 2)))
-GO
-INSERT [dbo].[Fares] ([Id], [Origin], [Destination], [Time], [PlanId], [StarterValue], [DiscountedValue], [FullValue]) VALUES (3, 18, 11, 200, 3, CAST(0.00 AS Decimal(18, 2)), CAST(167.20 AS Decimal(18, 2)), CAST(380.00 AS Decimal(18, 2)))
-GO
-INSERT [dbo].[Fares] ([Id], [Origin], [Destination], [Time], [PlanId], [StarterValue], [DiscountedValue], [FullValue]) VALUES (4, 18, 17, 100, 1, CAST(0.00 AS Decimal(18, 2)), CAST(0.00 AS Decimal(18, 2)), CAST(0.00 AS Decimal(18, 2)))
-GO
+
+INSERT [dbo].[Fares] ([Id], [Origin], [Destination], [Time], [PlanId], [StarterValue], [DiscountedValue], [FullValue], [UnitValue]) VALUES (1, 11, 16, 20, 1, CAST(0.00 AS Decimal(18, 2)), CAST(0.00 AS Decimal(18, 2)), CAST(38.00 AS Decimal(18, 2)), CAST(1.90 AS Decimal(18, 2)))
+INSERT [dbo].[Fares] ([Id], [Origin], [Destination], [Time], [PlanId], [StarterValue], [DiscountedValue], [FullValue], [UnitValue]) VALUES (2, 11, 17, 80, 2, CAST(0.00 AS Decimal(18, 2)), CAST(37.40 AS Decimal(18, 2)), CAST(136.00 AS Decimal(18, 2)), CAST(1.70 AS Decimal(18, 2)))
+INSERT [dbo].[Fares] ([Id], [Origin], [Destination], [Time], [PlanId], [StarterValue], [DiscountedValue], [FullValue], [UnitValue]) VALUES (3, 18, 11, 200, 3, CAST(0.00 AS Decimal(18, 2)), CAST(167.20 AS Decimal(18, 2)), CAST(380.00 AS Decimal(18, 2)), CAST(1.90 AS Decimal(18, 2)))
+INSERT [dbo].[Fares] ([Id], [Origin], [Destination], [Time], [PlanId], [StarterValue], [DiscountedValue], [FullValue], [UnitValue]) VALUES (4, 18, 17, 100, 1, CAST(0.00 AS Decimal(18, 2)), CAST(0.00 AS Decimal(18, 2)), CAST(0.00 AS Decimal(18, 2)), CAST(0.00 AS Decimal(18, 2)))
 SET IDENTITY_INSERT [dbo].[Fares] OFF
 GO
 SET IDENTITY_INSERT [dbo].[Plans] ON 
-GO
+
 INSERT [dbo].[Plans] ([Id], [Description]) VALUES (1, N'FaleMais 30')
-GO
 INSERT [dbo].[Plans] ([Id], [Description]) VALUES (2, N'FaleMais 60')
-GO
 INSERT [dbo].[Plans] ([Id], [Description]) VALUES (3, N'FaleMais 120')
-GO
-INSERT [dbo].[Plans] ([Id], [Description]) VALUES (4, N'Sem Desconto')
-GO
+INSERT [dbo].[Plans] ([Id], [Description]) VALUES (4, N'Sem Fale Mais')
 SET IDENTITY_INSERT [dbo].[Plans] OFF
 GO
 ALTER TABLE [dbo].[Fares] ADD  CONSTRAINT [DF_Fares_StarterValue]  DEFAULT ((0)) FOR [StarterValue]
@@ -126,8 +116,4 @@ ALTER TABLE [dbo].[Fares]  WITH CHECK ADD  CONSTRAINT [FK_Fares_Plans] FOREIGN K
 REFERENCES [dbo].[Plans] ([Id])
 GO
 ALTER TABLE [dbo].[Fares] CHECK CONSTRAINT [FK_Fares_Plans]
-GO
-USE [master]
-GO
-ALTER DATABASE [E:\PROJECTS\SKYNETZ.FALEMAIS\SKYNETZ.FALEMAIS.DATAACCESS\DB\SKYNETZ.FALEMAIS.MDF] SET  READ_ONLY 
 GO

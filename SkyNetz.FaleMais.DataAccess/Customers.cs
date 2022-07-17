@@ -25,6 +25,7 @@ namespace SkyNetz.FaleMais.DataAccess
         public string MiddleName { get; set; }
         public string LastName { get; set; }
         public string EMail { get; set; }
+        public int PlanId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Authorization> Authorization { get; set; }

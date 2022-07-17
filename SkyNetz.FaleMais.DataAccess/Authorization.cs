@@ -15,6 +15,7 @@ namespace SkyNetz.FaleMais.DataAccess
     public partial class Authorization
     {
         public int Id { get; set; }
+        public int CustomerId { get; set; }
         public System.DateTime LastLogin { get; set; }
         public System.DateTime Expires { get; set; }
         public System.Guid SystemId { get; set; }

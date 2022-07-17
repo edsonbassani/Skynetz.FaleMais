@@ -22,6 +22,7 @@ namespace SkyNetz.FaleMais.DataAccess
         public decimal StarterValue { get; set; }
         public decimal DiscountedValue { get; set; }
         public decimal FullValue { get; set; }
+        public decimal UnitValue { get; set; }
     
         public virtual Plans Plans { get; set; }
     }

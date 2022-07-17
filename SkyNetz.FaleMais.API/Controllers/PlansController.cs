@@ -14,7 +14,6 @@ using SkyNetz.FaleMais.DataAccess;
 
 namespace SkyNetz.FaleMais.API.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class PlansController : Base
     {
         [HttpPost]

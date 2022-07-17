@@ -14,7 +14,6 @@ using SkyNetz.FaleMais.DataAccess;
 
 namespace SkyNetz.FaleMais.API.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class CustomersController : ApiController
     {
         private FaleMaisContext db = new FaleMaisContext();

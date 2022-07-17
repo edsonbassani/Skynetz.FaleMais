@@ -23,7 +23,7 @@
           <Property Name="FirstName" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="MiddleName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="LastName" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="EMail" Type="varchar" MaxLength="200" />
+          <Property Name="EMail" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="PlanId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Fares">
@@ -38,6 +38,7 @@
           <Property Name="StarterValue" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="DiscountedValue" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="FullValue" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="UnitValue" Type="decimal" Precision="18" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="Plans">
           <Key>
@@ -110,8 +111,8 @@
           <EntitySet Name="Fares" EntityType="SkyNetz.FaleMais.DataAccess.Model.Fares" />
           <EntitySet Name="Plans" EntityType="SkyNetz.FaleMais.DataAccess.Model.Plans" />
           <AssociationSet Name="FK_Authorization_Customers" Association="SkyNetz.FaleMais.DataAccess.Model.FK_Authorization_Customers">
-            <End EntitySet="Customers" Role="Customers" />
-            <End EntitySet="Authorization" Role="Authorization" />
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Authorization" EntitySet="Authorization" />
           </AssociationSet>
           <AssociationSet Name="FK_Customers_Plans" Association="SkyNetz.FaleMais.DataAccess.Model.FK_Customers_Plans">
             <End Role="Plans" EntitySet="Plans" />
@@ -127,6 +128,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="Int32" Nullable="false" />
           <Property Name="LastLogin" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Expires" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="SystemId" Type="Guid" Nullable="false" />
@@ -140,7 +142,8 @@
           <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="MiddleName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="LastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="EMail" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="EMail" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="PlanId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Authorization" Relationship="SkyNetz.FaleMais.DataAccess.Model.FK_Authorization_Customers" FromRole="Customers" ToRole="Authorization" />
           <NavigationProperty Name="Plans" Relationship="SkyNetz.FaleMais.DataAccess.Model.FK_Customers_Plans" FromRole="Customers" ToRole="Plans" />
         </EntityType>
@@ -152,9 +155,11 @@
           <Property Name="Origin" Type="Byte" Nullable="false" />
           <Property Name="Destination" Type="Byte" Nullable="false" />
           <Property Name="Time" Type="Int32" Nullable="false" />
+          <Property Name="PlanId" Type="Int32" Nullable="false" />
           <Property Name="StarterValue" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="DiscountedValue" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="FullValue" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="UnitValue" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <NavigationProperty Name="Plans" Relationship="SkyNetz.FaleMais.DataAccess.Model.FK_Fares_Plans" FromRole="Fares" ToRole="Plans" />
         </EntityType>
         <EntityType Name="Plans">
@@ -167,16 +172,40 @@
           <NavigationProperty Name="Fares" Relationship="SkyNetz.FaleMais.DataAccess.Model.FK_Fares_Plans" FromRole="Plans" ToRole="Fares" />
         </EntityType>
         <Association Name="FK_Authorization_Customers">
-          <End Type="SkyNetz.FaleMais.DataAccess.Model.Customers" Multiplicity="1" Role="Customers" />
-          <End Type="SkyNetz.FaleMais.DataAccess.Model.Authorization" Multiplicity="*" Role="Authorization" />
+          <End Type="SkyNetz.FaleMais.DataAccess.Model.Customers" Role="Customers" Multiplicity="1" />
+          <End Type="SkyNetz.FaleMais.DataAccess.Model.Authorization" Role="Authorization" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Authorization">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
         <Association Name="FK_Customers_Plans">
           <End Type="SkyNetz.FaleMais.DataAccess.Model.Plans" Role="Plans" Multiplicity="1" />
           <End Type="SkyNetz.FaleMais.DataAccess.Model.Customers" Role="Customers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Plans">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customers">
+              <PropertyRef Name="PlanId" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
         <Association Name="FK_Fares_Plans">
           <End Type="SkyNetz.FaleMais.DataAccess.Model.Plans" Role="Plans" Multiplicity="1" />
           <End Type="SkyNetz.FaleMais.DataAccess.Model.Fares" Role="Fares" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Plans">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Fares">
+              <PropertyRef Name="PlanId" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -190,6 +219,7 @@
                 <ScalarProperty Name="SystemId" ColumnName="SystemId" />
                 <ScalarProperty Name="Expires" ColumnName="Expires" />
                 <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -197,6 +227,7 @@
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="SkyNetz.FaleMais.DataAccess.Model.Customers">
               <MappingFragment StoreEntitySet="Customers">
+                <ScalarProperty Name="PlanId" ColumnName="PlanId" />
                 <ScalarProperty Name="EMail" ColumnName="EMail" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
@@ -208,9 +239,11 @@
           <EntitySetMapping Name="Fares">
             <EntityTypeMapping TypeName="SkyNetz.FaleMais.DataAccess.Model.Fares">
               <MappingFragment StoreEntitySet="Fares">
+                <ScalarProperty Name="UnitValue" ColumnName="UnitValue" />
                 <ScalarProperty Name="FullValue" ColumnName="FullValue" />
                 <ScalarProperty Name="DiscountedValue" ColumnName="DiscountedValue" />
                 <ScalarProperty Name="StarterValue" ColumnName="StarterValue" />
+                <ScalarProperty Name="PlanId" ColumnName="PlanId" />
                 <ScalarProperty Name="Time" ColumnName="Time" />
                 <ScalarProperty Name="Destination" ColumnName="Destination" />
                 <ScalarProperty Name="Origin" ColumnName="Origin" />
@@ -226,30 +259,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="FK_Authorization_Customers" TypeName="SkyNetz.FaleMais.DataAccess.Model.FK_Authorization_Customers" StoreEntitySet="Authorization">
-            <EndProperty Name="Authorization">
-              <ScalarProperty Name="Id" ColumnName="Id" />
-            </EndProperty>
-            <EndProperty Name="Customers">
-              <ScalarProperty Name="Id" ColumnName="CustomerId" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="FK_Customers_Plans" TypeName="SkyNetz.FaleMais.DataAccess.Model.FK_Customers_Plans" StoreEntitySet="Customers">
-            <EndProperty Name="Customers">
-              <ScalarProperty Name="Id" ColumnName="Id" />
-            </EndProperty>
-            <EndProperty Name="Plans">
-              <ScalarProperty Name="Id" ColumnName="PlanId" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="FK_Fares_Plans" TypeName="SkyNetz.FaleMais.DataAccess.Model.FK_Fares_Plans" StoreEntitySet="Fares">
-            <EndProperty Name="Fares">
-              <ScalarProperty Name="Id" ColumnName="Id" />
-            </EndProperty>
-            <EndProperty Name="Plans">
-              <ScalarProperty Name="Id" ColumnName="PlanId" />
-            </EndProperty>
-          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -265,7 +274,7 @@
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="false" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>

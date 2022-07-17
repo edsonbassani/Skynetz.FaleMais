@@ -15,7 +15,6 @@ using Authorization = SkyNetz.FaleMais.DataAccess.Authorization;
 
 namespace SkyNetz.FaleMais.API.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class AuthorizationsController : Base
     {
 

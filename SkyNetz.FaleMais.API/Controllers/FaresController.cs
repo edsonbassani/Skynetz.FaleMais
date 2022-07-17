@@ -10,25 +10,51 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Http.Description;
+using Newtonsoft.Json.Linq;
 using SkyNetz.FaleMais.DataAccess;
 
 namespace SkyNetz.FaleMais.API.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class FaresController : Base
     {
         [HttpPost]
-        public async Task<IHttpActionResult> Get(int id)
+        [Route("api/fares/list")]
+        public async Task<IHttpActionResult> Get([FromBody]string id)
         {
-            Fares fares = await db.Fares.FindAsync(id);
-            if (fares == null)
+            int planId = int.Parse(id);
+            Fares fare = await db.Fares.Where(f => f.PlanId == planId).FirstOrDefaultAsync();
+            if (fare == null)
             {
                 return NotFound();
             }
 
-            return Json(fares);
+            return Json(fare);
         }
 
+        [HttpPost]
+        [Route("api/fares/calc")]
+        public IHttpActionResult Calc([FromBody]string data)
+        {
+            var ayParams = data.Split('|');
+            var planId = int.Parse(ayParams[0].ToString());
+            var origin = int.Parse(ayParams[1].ToString());
+            var destination = int.Parse(ayParams[2].ToString());
+            var minutes = int.Parse(ayParams[3].ToString());
+            Fares fare = db.Fares.ToList().Where(f => f.PlanId == planId && f.Origin == origin && f.Destination == destination).FirstOrDefault();
+            var timebase = 0;
+
+            if (minutes > fare.Time)
+                timebase = minutes - fare.Time;
+
+            var total = timebase * fare.UnitValue;
+
+            if (fare == null)
+            {
+                return NotFound();
+            }
+
+            return Json(total);
+        }
 
         protected override void Dispose(bool disposing)
         {
