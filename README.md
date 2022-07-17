@@ -2,6 +2,8 @@
 ## FaleMais
 ### Proof of Concept
 
+![Preview](https://github.com/edsonbassani/Skynetz.FaleMais/blob/master/SkyNetz.FaleMais.Web/images/FaleMais1.png)​
+
 **Technologies**
 - Microsoft .Net Framework 4.8 
 - WebForms
@@ -39,7 +41,3 @@
 **Before Run**
 - Consider change the **Database path** at **WebApplication's Web.Config** file under the **/connectionstring** tag to your current folder path. 
 - It is necessary to run properly entities mapping and data retrieving.
-
-
-
-![Preview](https://github.com/edsonbassani/Skynetz.FaleMais/blob/master/SkyNetz.FaleMais.Web/images/FaleMais1.png)​
