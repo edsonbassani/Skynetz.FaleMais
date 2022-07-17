@@ -30,7 +30,7 @@ namespace SkyNetz.FaleMais.API.Controllers
 
             return Json(fare);
         }
-
+         
         [HttpPost]
         [Route("api/fares/calc")]
         public IHttpActionResult Calc([FromBody]string data)
