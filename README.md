@@ -37,7 +37,9 @@
 - Authorization table is structured but no functional once it have the purpose to show how implement **tenants** concept starting at clients connections and identification.
 
 **Before Run**
-- Consider change the **Database path** at **WebApplication Web.Config** file under **<connectionstring></connectionstring>** tag to your current folder path. It is necessary to run properly entities mapping and data retrieve.
+- Consider change the **Database path** at **WebApplication Web.Config** file under 
+  <connectionstring></connectionstring> 
+  tag to your current folder path. It is necessary to run properly entities mapping and data retrieve.
 
 
 
